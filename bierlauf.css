@@ -15,9 +15,8 @@ body, html {
 }
 
 .tab-button {
-  display: inline-block; /* for <a> */
-  text-decoration: none; /* remove underline */
-  /* existing styles */
+  display: inline-block;
+  text-decoration: none;
   flex: 1;
   padding: 15px;
   cursor: pointer;
@@ -28,7 +27,7 @@ body, html {
   transition: background-color 0.3s;
   font-weight: bold;
   font-size: 16px;
-  color: inherit; /* preserve color */
+  color: inherit;
 }
 
 .tab-button:hover {
@@ -85,4 +84,15 @@ th {
 
 .button:hover {
   background-color: #2980b9;
+}
+
+.csv-table-scrollcontainer {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  border: 0px solid #ccc;
+}
+
+#csv-table-output {
+  white-space: nowrap;
 }
