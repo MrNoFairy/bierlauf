@@ -1,0 +1,88 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.tabs {
+  display: flex;
+  background-color: #f1f1f1;
+  border-bottom: 2px solid #ccc;
+}
+
+.tab-button {
+  display: inline-block; /* for <a> */
+  text-decoration: none; /* remove underline */
+  /* existing styles */
+  flex: 1;
+  padding: 15px;
+  cursor: pointer;
+  text-align: center;
+  background-color: #e7e7e7;
+  border: none;
+  outline: none;
+  transition: background-color 0.3s;
+  font-weight: bold;
+  font-size: 16px;
+  color: inherit; /* preserve color */
+}
+
+.tab-button:hover {
+  background-color: #ddd;
+}
+
+.tab-button.active {
+  background-color: #3498db;
+  color: white;
+}
+
+.tab-content {
+  flex-grow: 1;
+  display: none;
+  height: calc(100vh - 52px);
+}
+
+.tab-content.active {
+  display: block;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 10px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #3498db;
+  color: white;
+}
+
+.tab-text {
+  padding: 20px;
+  font-size: 18px;
+  color: #333;
+}
+
+.button {
+  padding: 10px 20px;
+  margin-top: 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.button:hover {
+  background-color: #2980b9;
+}

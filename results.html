@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Bierlauf</title>
+
+  <!-- PapaParse -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+  <link rel="stylesheet" href="bierlauf.css" />
+</head>
+<body>
+  <div class="tabs">
+  	<a href="rules.html" class="tab-button">Rules</a>
+  	<a href="map.html" class="tab-button">Map</a>
+    <div class="tab-button active">Results</div>
+  </div>
+
+  <div id="csv-table-output"></div>
+
+
+  <script>
+    const tableContainer = document.getElementById('csv-table-output');
+
+    // Load and sort CSV
+    fetch('data.csv')
+      .then(response => {
+        if (!response.ok) throw new Error("Failed to load CSV");
+        return response.text();
+      })
+      .then(csvText => {
+        const parsed = Papa.parse(csvText.trim(), { skipEmptyLines: true });
+
+        const initialCol = 1; // Sort by column 1
+        const direction = 1;  // Ascending
+
+        const sortedData = [...parsed.data.slice(1)].sort((a, b) => {
+          const valA = a[initialCol];
+          const valB = b[initialCol];
+          const numA = parseFloat(valA);
+          const numB = parseFloat(valB);
+
+          if (!isNaN(numA) && !isNaN(numB)) return direction * (numA - numB);
+          return direction * valA.localeCompare(valB);
+        });
+
+        renderCSVTable([parsed.data[0], ...sortedData], {
+          colIndex: initialCol,
+          direction: direction
+        });
+      })
+      .catch(err => {
+        tableContainer.innerHTML = `<p style="color:red;">Error loading CSV: ${err.message}</p>`;
+      });
+
+    // Render table
+    function renderCSVTable(data, sortState = { colIndex: 1, direction: 1 }) {
+      tableContainer.innerHTML = '';
+      const table = document.createElement('table');
+      const thead = document.createElement('thead');
+      const tbody = document.createElement('tbody');
+
+      const headerRow = document.createElement('tr');
+      data[0].forEach((cell, colIndex) => {
+        const th = document.createElement('th');
+        th.style.cursor = 'pointer';
+
+        let indicator = '';
+        if (sortState.colIndex === colIndex) {
+          indicator = sortState.direction === 1 ? ' ↑' : ' ↓';
+        }
+        th.textContent = cell + indicator;
+
+        th.addEventListener('click', () => {
+          let direction = 1;
+          if (sortState.colIndex === colIndex) {
+            direction = -sortState.direction;
+          }
+
+          const sortedData = [...data.slice(1)].sort((a, b) => {
+            const valA = a[colIndex];
+            const valB = b[colIndex];
+            const numA = parseFloat(valA);
+            const numB = parseFloat(valB);
+
+            if (!isNaN(numA) && !isNaN(numB)) return direction * (numA - numB);
+            return direction * valA.localeCompare(valB);
+          });
+
+          renderCSVTable([data[0], ...sortedData], { colIndex, direction });
+        });
+
+        headerRow.appendChild(th);
+      });
+
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
+
+      data.slice(1).forEach(row => {
+        const tr = document.createElement('tr');
+        row.forEach(cell => {
+          const td = document.createElement('td');
+          td.textContent = cell;
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+
+      table.appendChild(tbody);
+      tableContainer.appendChild(table);
+    }
+  </script>
+</body>
+</html>

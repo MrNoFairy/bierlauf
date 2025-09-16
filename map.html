@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Bierlauf</title>
+
+  <!-- Leaflet CSS & JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="bierlauf.css" />
+</head>
+<body>
+  <div class="tabs">
+  	<a href="rules.html" class="tab-button">Rules</a>
+    <div class="tab-button active">Map</div>
+  	<a href="results.html" class="tab-button">Results</a>
+  </div>
+
+  <div id="map" class="tab-content active"></div>
+
+  <script>
+    // Initialize Leaflet map
+    const map = L.map('map').setView([47.1660954796557, 9.462689994341888], 16);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    function addCustomMarker(lat, lng) {
+      const icon = L.icon({
+        iconSize: [60, 60],
+        iconUrl: 'marker.png'
+      });
+
+      L.marker([lat, lng], { icon }).addTo(map);
+    }
+
+    addCustomMarker(47.167893268261345, 9.469613737869583);
+    addCustomMarker(47.16678467231448, 9.46428040219615);
+    addCustomMarker(47.166680615530474, 9.45641035129132);
+    addCustomMarker(47.16229349457325, 9.465281855020619);
+  </script>
+</body>
+</html>
